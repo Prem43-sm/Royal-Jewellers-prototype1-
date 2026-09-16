@@ -1,0 +1,206 @@
+PROMPT FOR GENERATING WEB APPLICATION
+PRIVATE INDIAN JEWELLERY SHOP MANAGEMENT SYSTEM
+
+======================================================================
+PROJECT OVERVIEW
+======================================================================
+
+Build a complete, production-ready private Indian jewellery shop
+management web application. This is an internal business tool for
+managing a jewellery shop's daily operations including sales,
+inventory, purchases, customer management, financial tracking,
+and business reporting.
+
+The application must be:
+- Fully functional (not a mockup or prototype)
+- Database-backed with real persistence
+- Secure with authentication and authorization
+- Responsive across devices
+- Built with modern, maintainable technology
+
+======================================================================
+CORE BUSINESS DOMAIN
+======================================================================
+
+Indian Jewellery Shop Operations:
+- Selling gold, silver, diamond, and platinum jewellery
+- Tracking intricate jewellery specifications (purity, weight, HUID)
+- Managing gold/silver daily rate changes
+- Handling old gold exchange transactions
+- Custom order management
+- Job work with artisans
+- Repair services
+- Supplier management
+- Customer credit tracking
+- Financial accounting
+- GST compliance
+- Business reporting
+
+======================================================================
+TECHNOLOGY STACK
+======================================================================
+
+Frontend:
+- React 18+ with TypeScript
+- Vite for build tooling
+- Tailwind CSS for styling
+- React Router v6 for routing
+- Zustand for state management
+- React Hook Form for forms
+- Recharts for charts
+- Lucide React for icons
+- Axios for API calls
+
+Backend:
+- Node.js with Express
+- TypeScript
+- Prisma ORM
+- SQLite (for easy setup, no external DB needed)
+- JWT authentication
+- bcrypt for passwords
+- Multer for file uploads
+- express-validator for validation
+- cors, helmet for security
+
+======================================================================
+KEY FEATURES TO IMPLEMENT
+======================================================================
+
+1. Authentication System
+   - Login/logout
+   - JWT tokens
+   - Password hashing
+   - Role-based access (Owner, Manager, Staff)
+
+2. Dashboard
+   - Real-time stats from database
+   - Charts and graphs
+   - Alerts and notifications
+   - Quick actions
+
+3. Sales/POS
+   - Fast jewellery item search
+   - Customer selection
+   - Price calculation engine
+   - Multiple payment methods
+   - Invoice generation
+   - Stock updates
+
+4. Inventory Management
+   - Add/edit/delete jewellery items
+   - Detailed jewellery specifications
+   - Stock tracking
+   - Status management
+   - Image support
+   - Barcode support
+
+5. Metal Stock & Ledger
+   - Daily rate management
+   - Metal weight tracking
+   - Movement history
+   - Balance reconciliation
+
+6. Customer Management
+   - Customer profiles
+   - Transaction history
+   - Credit tracking
+   - Payment recording
+
+7. Supplier Management
+   - Supplier profiles
+   - Purchase history
+   - Payment tracking
+
+8. Purchases
+   - Purchase entry
+   - Inventory updates
+   - Supplier balance updates
+
+9. Old Gold Exchange
+   - Old gold intake
+   - Testing records
+   - Valuation
+   - Exchange processing
+
+10. Orders (Custom)
+    - Order lifecycle management
+    - Status tracking
+    - Advance payments
+
+11. Job Work / Artisan
+    - Gold issue tracking
+    - Return tracking
+    - Metal ledger updates
+
+12. Repairs
+    - Repair intake
+    - Status tracking
+    - Cost management
+
+13. Accounts & Expenses
+    - Expense tracking
+    - Payment management
+    - Account balances
+
+14. Reports
+    - Sales, purchase, profit reports
+    - Stock reports
+    - Outstanding reports
+    - Charts and exports
+
+15. Day Closing
+    - Daily summary
+    - Cash reconciliation
+    - Close day
+
+16. Documents
+    - File upload/management
+    - Categorization
+    - Secure access
+
+17. Audit Logs
+    - Activity tracking
+    - Change history
+
+18. Backup/Restore
+    - Database backup
+    - Restore capability
+
+19. Settings
+    - Shop configuration
+    - Rate settings
+    - User management
+
+20. Global Search
+    - Cross-entity search
+    - Grouped results
+
+======================================================================
+DESIGN REQUIREMENTS
+======================================================================
+
+- Premium Indian jewellery business aesthetic
+- Warm white/ivory backgrounds
+- Dark charcoal text
+- Champagne gold accents
+- Clean, professional cards
+- Subtle shadows and borders
+- Responsive for desktop and mobile
+- Fast and efficient for daily use
+
+======================================================================
+QUALITY REQUIREMENTS
+======================================================================
+
+- All features must actually work
+- Database must persist all data
+- Calculations must be accurate
+- Security must be enforced
+- Error handling must be graceful
+- Code must be clean and maintainable
+- Build must succeed
+- Application must start and run
+
+======================================================================
+END OF GENERATION PROMPT
+======================================================================

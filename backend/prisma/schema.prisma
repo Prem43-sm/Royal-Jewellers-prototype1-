@@ -1,0 +1,561 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  name          String
+  email         String    @unique
+  passwordHash  String
+  role          String    @default("STAFF")
+  status        String    @default("ACTIVE")
+  phone         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  auditLogs     AuditLog[]
+  sales         Sale[]
+  purchases     Purchase[]
+  expenses      Expense[]
+  receipts      SalePayment[]
+  payments      Payment[]
+  customerPayments CustomerPayment[]
+  dayClosings   DayClosing[]
+  notifications Notification[]
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  createdAt DateTime  @default(now())
+  products  Product[]
+}
+
+model Product {
+  id                Int       @id @default(autoincrement())
+  itemCode          String    @unique
+  barcode           String?   @unique
+  name              String
+  categoryId        Int?
+  category          Category? @relation(fields: [categoryId], references: [id])
+  metal             String    @default("GOLD")
+  purity            Float     @default(22)
+  fineness          Float     @default(0.916)
+  grossWeight       Float
+  stoneWeight       Float     @default(0)
+  otherMaterialWeight Float    @default(0)
+  netWeight         Float
+  fineGoldWeight    Float     @default(0)
+  stoneType         String?
+  hallmark          Boolean   @default(false)
+  huid              String?
+  purchaseCost      Float?
+  sellingPrice      Float?
+  makingCharge      Float     @default(0)
+  wastage           Float     @default(0)
+  wastagePercent    Float     @default(0)
+  stoneCharge       Float     @default(0)
+  otherCharge       Float     @default(0)
+  discount          Float     @default(0)
+  taxRate           Float     @default(0)
+  supplierId        Int?
+  supplier          Supplier? @relation(fields: [supplierId], references: [id])
+  purchaseDate      DateTime?
+  status            String    @default("IN_STOCK")
+  image             String?
+  notes             String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  deletedAt         DateTime?
+  saleItems         SaleItem[]
+  purchaseItems     PurchaseItem[]
+  orderItems        OrderItem[]
+  jobWorkItems      JobWorkItem[]
+  repairs           Repair[]
+  stockMovements    StockMovement[]
+  oldGoldExchanges  OldGoldExchange[]
+  goldTests         GoldTest[]
+}
+
+model StockMovement {
+  id            Int       @id @default(autoincrement())
+  productId     Int?
+  product       Product?  @relation(fields: [productId], references: [id])
+  metal         String    @default("GOLD")
+  purity        Float     @default(22)
+  weight        Float
+  movementType  String
+  referenceType String?
+  referenceId   Int?
+  notes         String?
+  createdAt     DateTime  @default(now())
+}
+
+model MetalRate {
+  id        Int      @id @default(autoincrement())
+  metal     String   @default("GOLD")
+  purity    Float    @default(22)
+  buyRate   Float
+  sellRate  Float
+  date      DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([metal, purity, date])
+}
+
+model Customer {
+  id          Int          @id @default(autoincrement())
+  name        String
+  phone       String?
+  email       String?
+  address     String?
+  gstNumber   String?
+  notes       String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  deletedAt   DateTime?
+  sales       Sale[]
+  transactions CustomerTransaction[]
+  payments    CustomerPayment[]
+  oldGoldExchanges OldGoldExchange[]
+  orders      Order[]
+  repairs     Repair[]
+
+  @@index([name])
+  @@index([phone])
+}
+
+model CustomerTransaction {
+  id          Int       @id @default(autoincrement())
+  customerId  Int
+  customer    Customer  @relation(fields: [customerId], references: [id])
+  type        String
+  amount      Float
+  balanceAfter Float
+  description String?
+  referenceId Int?
+  createdAt   DateTime  @default(now())
+}
+
+model CustomerPayment {
+  id            Int      @id @default(autoincrement())
+  customerId    Int
+  customer      Customer @relation(fields: [customerId], references: [id])
+  amount        Float
+  method        String   @default("CASH")
+  notes         String?
+  createdBy     Int?
+  user          User?    @relation(fields: [createdBy], references: [id])
+  createdAt     DateTime @default(now())
+  saleId        Int?
+}
+
+model Supplier {
+  id          Int       @id @default(autoincrement())
+  name        String
+  contactPerson String?
+  phone       String?
+  email       String?
+  address     String?
+  gstNumber   String?
+  bankName    String?
+  bankAccount String?
+  ifsc        String?
+  notes       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  products    Product[]
+  purchases   Purchase[]
+  transactions SupplierTransaction[]
+  payments    Payment[]
+
+  @@index([name])
+  @@index([phone])
+}
+
+model SupplierTransaction {
+  id          Int       @id @default(autoincrement())
+  supplierId  Int
+  supplier    Supplier  @relation(fields: [supplierId], references: [id])
+  type        String
+  amount      Float
+  balanceAfter Float
+  description String?
+  referenceId Int?
+  createdAt   DateTime  @default(now())
+}
+
+model Payment {
+  id          Int       @id @default(autoincrement())
+  supplierId  Int
+  supplier    Supplier  @relation(fields: [supplierId], references: [id])
+  amount      Float
+  method      String    @default("CASH")
+  notes       String?
+  createdBy   Int?
+  user        User?     @relation(fields: [createdBy], references: [id])
+  createdAt   DateTime  @default(now())
+  purchaseId  Int?
+  purchase    Purchase? @relation(fields: [purchaseId], references: [id])
+}
+
+model Sale {
+  id            Int       @id @default(autoincrement())
+  invoiceNumber String    @unique
+  customerId    Int?
+  customer      Customer? @relation(fields: [customerId], references: [id])
+  totalAmount   Float
+  discountTotal Float     @default(0)
+  taxTotal      Float     @default(0)
+  grandTotal    Float
+  paidAmount    Float     @default(0)
+  balanceAmount Float     @default(0)
+  paymentMethod String    @default("CASH")
+  status        String    @default("COMPLETED")
+  profit        Float     @default(0)
+  notes         String?
+  createdBy     Int?
+  user          User?     @relation(fields: [createdBy], references: [id])
+  createdAt     DateTime  @default(now())
+  items         SaleItem[]
+  payments      SalePayment[]
+  dayCloseId    Int?
+
+  @@index([invoiceNumber])
+  @@index([createdAt])
+}
+
+model SaleItem {
+  id           Int      @id @default(autoincrement())
+  saleId       Int
+  sale         Sale     @relation(fields: [saleId], references: [id])
+  productId    Int?
+  product      Product? @relation(fields: [productId], references: [id])
+  name         String
+  metal        String   @default("GOLD")
+  purity       Float    @default(22)
+  grossWeight  Float
+  netWeight    Float
+  rate         Float
+  metalValue   Float
+  makingCharge Float    @default(0)
+  wastage      Float    @default(0)
+  stoneCharge  Float    @default(0)
+  otherCharge  Float    @default(0)
+  discount     Float    @default(0)
+  taxAmount    Float    @default(0)
+  taxRate      Float    @default(0)
+  total        Float
+  costPrice    Float    @default(0)
+  quantity     Int      @default(1)
+}
+
+model SalePayment {
+  id          Int      @id @default(autoincrement())
+  saleId      Int
+  sale        Sale     @relation(fields: [saleId], references: [id])
+  amount      Float
+  method      String   @default("CASH")
+  receivedBy  Int?
+  user        User?    @relation(fields: [receivedBy], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+model Purchase {
+  id            Int      @id @default(autoincrement())
+  purchaseNumber String  @unique
+  supplierId    Int
+  supplier      Supplier @relation(fields: [supplierId], references: [id])
+  totalCost     Float
+  paidAmount    Float    @default(0)
+  balanceAmount Float    @default(0)
+  paymentMethod String   @default("CASH")
+  status        String   @default("COMPLETED")
+  notes         String?
+  createdBy     Int?
+  user          User?    @relation(fields: [createdBy], references: [id])
+  createdAt     DateTime @default(now())
+  items         PurchaseItem[]
+  payments      Payment[]
+
+  @@index([purchaseNumber])
+  @@index([createdAt])
+}
+
+model PurchaseItem {
+  id         Int      @id @default(autoincrement())
+  purchaseId Int
+  purchase   Purchase @relation(fields: [purchaseId], references: [id])
+  productId  Int?
+  product    Product? @relation(fields: [productId], references: [id])
+  name       String
+  metal      String   @default("GOLD")
+  purity     Float    @default(22)
+  grossWeight Float
+  netWeight  Float
+  rate       Float
+  cost       Float
+  quantity   Int      @default(1)
+}
+
+model OldGoldExchange {
+  id               Int       @id @default(autoincrement())
+  customerId       Int?
+  customer         Customer? @relation(fields: [customerId], references: [id])
+  metal            String    @default("GOLD")
+  grossWeight      Float
+  stoneWeight      Float     @default(0)
+  otherMaterialWeight Float   @default(0)
+  netWeight        Float
+  testedPurity     Float
+  fineness         Float
+  testingMethod    String?
+  testingNotes     String?
+  fineGoldWeight   Float
+  rate             Float
+  grossValue       Float
+  deductions       Float     @default(0)
+  finalValue       Float
+  notes            String?
+  createdBy        Int?
+  createdAt        DateTime  @default(now())
+  productId        Int?
+  product          Product?  @relation(fields: [productId], references: [id])
+}
+
+model GoldTest {
+  id            Int       @id @default(autoincrement())
+  productId     Int?
+  product       Product?  @relation(fields: [productId], references: [id])
+  grossWeight   Float
+  purity        Float
+  testingMethod String
+  acceptedWeight Float
+  fineGoldWeight Float
+  rate          Float
+  value         Float
+  deduction     Float     @default(0)
+  finalValue    Float
+  notes         String?
+  createdAt     DateTime  @default(now())
+}
+
+model Order {
+  id            Int       @id @default(autoincrement())
+  orderNumber   String    @unique
+  customerId    Int?
+  customer      Customer? @relation(fields: [customerId], references: [id])
+  jewelleryType String?
+  metal         String    @default("GOLD")
+  purity        Float     @default(22)
+  estimatedWeight Float
+  estimatedPrice Float
+  makingCharge  Float     @default(0)
+  stoneCharge   Float     @default(0)
+  otherCharge   Float     @default(0)
+  totalPrice    Float
+  advance       Float     @default(0)
+  balance       Float
+  designRef     String?
+  notes         String?
+  status        String    @default("QUOTATION")
+  orderDate     DateTime  @default(now())
+  expectedDate  DateTime?
+  deliveredDate DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  items         OrderItem[]
+}
+
+model OrderItem {
+  id        Int      @id @default(autoincrement())
+  orderId   Int
+  order     Order    @relation(fields: [orderId], references: [id])
+  productId Int?
+  product   Product? @relation(fields: [productId], references: [id])
+  name      String
+  weight    Float
+  price     Float
+}
+
+model Artisan {
+  id        Int       @id @default(autoincrement())
+  name      String
+  phone     String?
+  address   String?
+  specialty String?
+  active    Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  jobWorks  JobWork[]
+}
+
+model JobWork {
+  id            Int       @id @default(autoincrement())
+  jobNumber     String    @unique
+  artisanId     Int
+  artisan       Artisan   @relation(fields: [artisanId], references: [id])
+  jobDate       DateTime  @default(now())
+  expectedDate  DateTime?
+  status        String    @default("ISSUED")
+  labourCharge  Float     @default(0)
+  notes         String?
+  createdBy     Int?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  items         JobWorkItem[]
+}
+
+model JobWorkItem {
+  id             Int       @id @default(autoincrement())
+  jobWorkId      Int
+  jobWork        JobWork   @relation(fields: [jobWorkId], references: [id])
+  productId      Int?
+  product        Product?  @relation(fields: [productId], references: [id])
+  metal          String    @default("GOLD")
+  purity         Float     @default(22)
+  issuedWeight   Float
+  returnedWeight Float     @default(0)
+  finished       Boolean   @default(false)
+}
+
+model Repair {
+  id              Int       @id @default(autoincrement())
+  repairNumber    String    @unique
+  customerId      Int?
+  customer        Customer? @relation(fields: [customerId], references: [id])
+  productId       Int?
+  product         Product?  @relation(fields: [productId], references: [id])
+  problem         String
+  receivedDate    DateTime  @default(now())
+  estimatedCost   Float     @default(0)
+  advancePaid     Float     @default(0)
+  artisanId       Int?
+  expectedDelivery DateTime?
+  actualDelivery  DateTime?
+  status          String    @default("RECEIVED")
+  notes           String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Expense {
+  id            Int      @id @default(autoincrement())
+  date          DateTime @default(now())
+  category      String   @default("MISCELLANEOUS")
+  description   String
+  amount        Float
+  paymentMethod String   @default("CASH")
+  createdBy     Int?
+  user          User?    @relation(fields: [createdBy], references: [id])
+  notes         String?
+  createdAt     DateTime @default(now())
+  deletedAt     DateTime?
+}
+
+model Account {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  type        String
+  balance     Float    @default(0)
+  createdAt   DateTime @default(now())
+  transactions AccountTransaction[]
+}
+
+model AccountTransaction {
+  id          Int       @id @default(autoincrement())
+  accountId   Int
+  account     Account   @relation(fields: [accountId], references: [id])
+  type        String
+  amount      Float
+  method      String    @default("CASH")
+  description String?
+  createdAt   DateTime  @default(now())
+}
+
+model Document {
+  id          Int      @id @default(autoincrement())
+  name        String
+  fileName    String
+  filePath    String
+  fileSize    Int
+  mimeType    String
+  category    String   @default("OTHER")
+  description String?
+  relatedId   Int?
+  createdAt   DateTime @default(now())
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    Int?
+  user      User?    @relation(fields: [userId], references: [id])
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id        Int       @id @default(autoincrement())
+  userId    Int?
+  user      User?     @relation(fields: [userId], references: [id])
+  action    String
+  entity    String
+  recordId  Int?
+  oldValue  String?
+  newValue  String?
+  createdAt DateTime  @default(now())
+
+  @@index([entity, recordId])
+  @@index([createdAt])
+}
+
+model DayClosing {
+  id               Int      @id @default(autoincrement())
+  closeDate        DateTime @unique
+  totalSales       Float    @default(0)
+  totalPurchases   Float    @default(0)
+  totalExpenses    Float    @default(0)
+  cashSales        Float    @default(0)
+  upiSales         Float    @default(0)
+  cardSales        Float    @default(0)
+  creditSales      Float    @default(0)
+  bankSales        Float    @default(0)
+  otherSales       Float    @default(0)
+  customerPayments Float    @default(0)
+  supplierPayments Float    @default(0)
+  goldSoldWeight   Float    @default(0)
+  goldPurchasedWeight Float @default(0)
+  silverSoldWeight Float   @default(0)
+  silverPurchasedWeight Float @default(0)
+  expectedCash     Float    @default(0)
+  actualCash       Float    @default(0)
+  difference       Float    @default(0)
+  notes            String?
+  closedBy         Int?
+  user             User?    @relation(fields: [closedBy], references: [id])
+  createdAt        DateTime @default(now())
+}
+
+model Settings {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model Backup {
+  id        Int      @id @default(autoincrement())
+  fileName  String
+  filePath  String
+  fileSize  Int
+  notes     String?
+  createdBy Int?
+  createdAt DateTime @default(now())
+}

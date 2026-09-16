@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "framework": null,
+  "installCommand": "npm install && npm --prefix frontend install",
+  "buildCommand": "npm run build",
+  "outputDirectory": "frontend/dist",
+  "functions": {
+    "api/index.ts": {
+      "includeFiles": "backend/prisma/dev.db"
+    }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index" },
+    { "source": "/(.*)", "destination": "/" }
+  ],
+  "env": {
+    "DATABASE_URL": "file:./backend/prisma/dev.db",
+    "JWT_SECRET": "jewellery-shop-secret-key-change-in-production-2026",
+    "JWT_EXPIRES_IN": "24h"
+  }
+}

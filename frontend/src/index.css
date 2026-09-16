@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-ivory text-charcoal font-sans antialiased;
+  }
+  * {
+    @apply border-gray-200;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 bg-gold text-white font-medium rounded-lg transition-colors duration-150 hover:bg-gold-dark active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 border border-gold text-gold font-medium rounded-lg transition-colors duration-150 hover:bg-gold-light active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-500 text-white font-medium rounded-lg transition-colors duration-150 hover:bg-red-600 active:scale-[0.98] disabled:opacity-50;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-charcoal font-medium rounded-lg transition-colors duration-150 hover:bg-gray-100 active:scale-[0.98] disabled:opacity-50;
+  }
+  .btn-sm {
+    @apply px-3 py-1.5 text-sm;
+  }
+  .input-field {
+    @apply w-full px-3 py-2 h-10 border rounded-lg text-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition;
+  }
+  .label {
+    @apply block text-sm font-medium text-gray-600 mb-1;
+  }
+  .card {
+    @apply bg-white border rounded-card shadow-card p-5;
+  }
+  .card-title {
+    @apply text-base font-semibold text-charcoal mb-4;
+  }
+  .table-header {
+    @apply px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500 bg-gray-50 border-b;
+  }
+  .table-cell {
+    @apply px-4 py-3 text-sm border-b border-gray-100 whitespace-nowrap;
+  }
+  .badge {
+    @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium;
+  }
+  .modal-backdrop {
+    @apply fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4;
+  }
+  .toast-container {
+    @apply fixed top-4 right-4 z-[100] flex flex-col gap-2;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}

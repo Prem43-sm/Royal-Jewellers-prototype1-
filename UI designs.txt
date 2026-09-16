@@ -1,0 +1,484 @@
+UI DESIGN SPECIFICATION
+PRIVATE INDIAN JEWELLERY SHOP MANAGEMENT SYSTEM
+VERSION 1.0
+
+======================================================================
+1. DESIGN PHILOSOPHY
+======================================================================
+
+This is a PRIVATE INTERNAL business management system, NOT a public
+e-commerce storefront. The UI must feel like a premium SaaS dashboard
+for internal business use.
+
+Design Language:
+- Premium Indian jewellery-business aesthetic
+- Modern SaaS dashboard style
+- Clean, professional, trustworthy
+- Efficient for daily business operations
+- Not flashy, not decorative, not consumer-facing
+
+======================================================================
+2. COLOR PALETTE
+======================================================================
+
+Primary Background: Warm White/Ivory (#FAFAF8 or #F5F5F0)
+Card Background: Pure White (#FFFFFF)
+Sidebar Background: Dark Charcoal (#1A1A2E or #2D2D3F)
+Sidebar Text: Light (#E0E0E0)
+Sidebar Active: Champagne Gold (#C9A96E)
+Primary Text: Dark Charcoal (#2D2D3F)
+Secondary Text: Medium Gray (#6B7280)
+Border: Light Gray (#E5E7EB)
+Accent: Champagne Gold (#C9A96E or #D4AF37)
+Success: Green (#10B981)
+Warning: Amber (#F59E0B)
+Error: Red (#EF4444)
+Info: Blue (#3B82F6)
+Hover: Subtle warm gray (#F3F4F6)
+Selected Row: Very light gold (#FDF8F0)
+
+======================================================================
+3. TYPOGRAPHY
+======================================================================
+
+Font Family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif
+(Or 'Poppins' for headings if available)
+
+Headings: 600-700 weight, dark charcoal
+Body: 400 weight, dark charcoal
+Labels: 500 weight, medium gray
+Small/Helper: 400 weight, light gray
+Numbers/Currency: Monospace or tabular-nums
+
+Sizes:
+- Page Title: 24px
+- Section Title: 18-20px
+- Card Title: 16px
+- Body: 14px
+- Small: 12px
+
+======================================================================
+4. SPACING & LAYOUT
+======================================================================
+
+Page Padding: 24px
+Card Padding: 20-24px
+Gap Between Cards: 16-20px
+Table Row Height: 48-52px
+Input Height: 40px
+Button Height: 40px (default), 36px (small), 44px (large)
+
+Border Radius:
+- Cards: 8-12px
+- Buttons: 6-8px
+- Inputs: 6-8px
+- Modals: 12-16px
+- Tables: 0 (square for data tables)
+
+Shadows:
+- Cards: 0 1px 3px rgba(0,0,0,0.08)
+- Dropdowns: 0 4px 12px rgba(0,0,0,0.12)
+- Modals: 0 8px 32px rgba(0,0,0,0.16)
+
+======================================================================
+5. GLOBAL APPLICATION SHELL
+======================================================================
+
+5.1 Left Sidebar (Fixed, 240px width)
+- Shop logo/name at top (with gold accent)
+- Navigation items with icons
+- Active item: gold left border + gold text + light gold bg
+- Hover: subtle background change
+- Collapse toggle at bottom
+
+Navigation Items (in order):
+1. Dashboard (grid icon)
+2. Sales / POS (shopping cart icon)
+3. Invoices (receipt icon)
+4. Inventory (box icon)
+5. Metal Stock (gem icon)
+6. Old Gold Exchange (refresh icon)
+7. Purchases (truck icon)
+8. Customers (users icon)
+9. Suppliers (building icon)
+10. Orders (clipboard icon)
+11. Job Work (tools icon)
+12. Repairs (wrench icon)
+13. Accounts (wallet icon)
+14. Reports (chart icon)
+15. Documents (folder icon)
+16. Settings (gear icon)
+--- Separator ---
+17. Audit Logs (shield icon) - Owner only
+18. Backup (database icon) - Owner only
+
+5.2 Top Header (Fixed, 64px height)
+- Left: Hamburger menu (mobile) + Page title
+- Center: Global search bar with icon
+- Right section:
+  * Gold rate display (small badge)
+  * Silver rate display (small badge)
+  * Notification bell (with count badge)
+  * Security/Lock indicator
+  * User avatar + name + role
+  * Current date
+
+5.3 Main Content Area
+- Below header, right of sidebar
+- Scrollable
+- Responsive padding
+
+======================================================================
+6. COMPONENT STYLES
+======================================================================
+
+6.1 Cards
+- White background
+- 1px border light gray
+- 8-12px border radius
+- Subtle shadow
+- Padding: 20-24px
+- Title: 16px, 600 weight
+- Optional gold top border for emphasis
+
+6.2 Buttons
+Primary (Gold):
+- Background: #C9A96E
+- Text: white
+- Hover: #B8944F
+- Active: #A78540
+
+Secondary (Outline):
+- Background: transparent
+- Border: 1px solid #C9A96E
+- Text: #C9A96E
+- Hover: light gold background
+
+Danger:
+- Background: #EF4444
+- Text: white
+
+Ghost:
+- Background: transparent
+- Text: secondary text
+- Hover: light gray background
+
+All buttons:
+- 6-8px border radius
+- 40px height
+- 16px horizontal padding
+- 500 weight text
+- Smooth transitions (150ms)
+
+6.3 Forms
+- Labels above inputs, 500 weight, 14px
+- Input: 40px height, 1px light gray border, 6px radius
+- Focus: gold border, subtle gold shadow
+- Error: red border, red helper text below
+- Helper text: 12px, gray
+
+6.4 Tables
+- Clean header: light gray background, 500 weight, 12px uppercase
+- Alternating rows: white and very light gray
+- Hover: light warm gray
+- Selected: very light gold
+- Borders: only bottom border on rows
+- Sticky header on scroll
+- Pagination at bottom
+
+6.5 Modals/Dialogs
+- Centered overlay with backdrop
+- White background, 12-16px radius
+- Title: 18-20px, 600 weight
+- Content padding: 24px
+- Footer with action buttons, right-aligned
+- Close button (X) top right
+
+6.6 Badges/Tags
+- Small, rounded (9999px radius)
+- Status-specific colors
+- 12px text, 500 weight
+
+6.7 Tabs
+- Horizontal tabs with bottom border
+- Active: gold bottom border, dark text
+- Inactive: gray text, no border
+
+6.8 Search Bar
+- Rounded, 40px height
+- Gray background (#F3F4F6)
+- Search icon left
+- Clear button when has text
+
+6.9 Tooltips
+- Dark background (#1A1A2E)
+- White text
+- Small arrow
+- 12px text
+
+6.10 Toast/Notification
+- Top right corner
+- Slide in animation
+- Color-coded (success, error, warning, info)
+- Auto-dismiss after 5 seconds
+- Manual dismiss button
+
+6.11 Loading States
+- Skeleton loaders for cards/tables
+- Spinner for buttons
+- Full page loader for initial loads
+
+6.12 Empty States
+- Centered illustration/icon
+- Title: "No data found"
+- Description: helpful text
+- Action button if applicable
+
+======================================================================
+7. PAGE LAYOUTS
+======================================================================
+
+7.1 Dashboard Layout
+- Top row: 4 stat cards (Today's Sales, Purchases, Profit, Outstanding)
+- Second row: 2 chart cards (Sales Trend, Category Distribution)
+- Third row: Rate cards + Stock summary
+- Fourth row: Alerts panel + Recent transactions
+- Bottom: Quick action buttons
+
+7.2 List Pages Layout (Customers, Suppliers, Inventory, etc.)
+- Page header: Title + Add button
+- Filter bar: Search + dropdown filters
+- Data table with columns
+- Pagination
+- Bulk actions (select, delete)
+
+7.3 Detail Pages Layout
+- Page header: Title + Back button + Edit button
+- Info cards with details
+- Related data tabs
+- Action buttons
+
+7.4 Form Pages Layout
+- Page header: Title + Cancel/Save buttons
+- Form sections with cards
+- Clear field grouping
+- Validation feedback
+
+7.5 POS/Sales Layout
+- Left panel (60%): Item search/scan, selected items list
+- Right panel (40%): Customer selection, calculation breakdown,
+  payment method, complete sale button
+
+7.6 Reports Layout
+- Filter bar at top
+- Summary cards
+- Data table or chart
+- Export buttons (PDF, Excel, CSV, Print)
+
+======================================================================
+8. RESPONSIVE BREAKPOINTS
+======================================================================
+
+Desktop: >= 1280px
+- Full sidebar (240px)
+- Full content area
+- Multi-column layouts
+
+Tablet: 768px - 1279px
+- Collapsible sidebar (overlay or push)
+- Adapted layouts
+- Fewer columns in tables
+
+Mobile: < 768px
+- No sidebar (hamburger menu)
+- Bottom navigation or slide-out menu
+- Single column layouts
+- Stacked cards
+- Horizontal scroll for wide tables
+- Compact forms
+- Touch-friendly targets (min 44px)
+
+======================================================================
+9. SPECIFIC PAGE DESIGNS
+======================================================================
+
+9.1 Login Page
+- Centered card on warm background
+- Shop logo
+- Email and password fields
+- Login button (gold)
+- Subtle decorative element (not flashy)
+- "Private Management System" subtitle
+
+9.2 Sales/POS Page
+- Split layout: items (left) + checkout (right)
+- Search bar at top of items panel
+- Item cards with image, name, code, weight, price
+- Selected items as table with quantity, price, remove
+- Customer search/select
+- Calculation breakdown: item-wise and totals
+- Payment method tabs
+- "Complete Sale" large gold button
+
+9.3 Inventory Page
+- Grid/List toggle view
+- Grid: item cards with image, code, name, weight, status, price
+- List: data table with all fields
+- Filter sidebar or bar: category, metal, purity, status, price range
+- Bulk import button
+- Add item button
+
+9.4 Settings Page
+- Tabbed layout: General, Business, Rates, Tax, Users, Security, Backup
+- Shop details form
+- Rate configuration
+- Tax configuration
+- User management table
+- Backup controls
+
+======================================================================
+10. ANIMATION & TRANSITIONS
+======================================================================
+
+Keep animations subtle and professional:
+- Page transitions: fade (150ms)
+- Hover effects: 150ms ease
+- Modal open/close: fade + scale
+- Sidebar expand/collapse: slide (200ms)
+- Toast slide-in: 300ms ease-out
+- Loading shimmer: infinite 1.5s
+- Button press: scale(0.98)
+- No bouncing, no flashy effects, no heavy animations
+
+======================================================================
+11. ICONS
+======================================================================
+
+Use Lucide React icons or similar clean icon set:
+- Consistent 20px size for navigation
+- 16px for inline/table icons
+- 24px for action buttons
+- Stroke style (not filled) for consistency
+- Color matches text or is gold for emphasis
+
+======================================================================
+12. FORM PATTERNS
+======================================================================
+
+12.1 Add/Edit Jewellery Form
+Section 1: Basic Info
+- Item code (auto or manual)
+- Name/Description
+- Category (dropdown)
+- Metal type (dropdown: Gold, Silver, Diamond, Platinum, Other)
+- Purity (dropdown based on metal)
+
+Section 2: Weight Details
+- Gross weight
+- Stone weight
+- Other material weight
+- Net weight (auto-calculated)
+
+Section 3: Quality
+- Hallmark (checkbox)
+- HUID
+- Stone type
+- Fineness (auto from purity)
+
+Section 4: Pricing
+- Purchase cost
+- Making charge
+- Wastage %
+- Selling price (auto-calculated or manual)
+
+Section 5: Source
+- Supplier (dropdown)
+- Purchase date
+- Invoice number
+
+Section 6: Media
+- Image upload (drag & drop or click)
+- Barcode (auto-generate or manual)
+
+Section 7: Notes
+- Text area
+
+12.2 Sale Form
+- Customer search with autocomplete
+- Item search with barcode scan support
+- Quantity adjustment
+- Discount per item or total
+- Payment method selection
+- Split payment option
+- Notes
+
+12.3 Old Gold Exchange Form
+- Customer selection
+- Old gold details (multiple items possible)
+- Each: type, gross weight, stone weight, net weight, tested purity
+- Testing info: method, result
+- Valuation: rate, fine weight, value
+- Deductions
+- Final exchange value
+- Link to new sale
+
+======================================================================
+13. TABLE COLUMN DESIGNS
+======================================================================
+
+13.1 Inventory Table
+| Code | Image | Name | Category | Metal | Purity | Weight | Status | Price | Actions |
+
+13.2 Sales Table
+| Invoice # | Date | Customer | Items | Total | Payment | Status | Actions |
+
+13.3 Customers Table
+| Name | Phone | Email | Balance | Last Transaction | Actions |
+
+13.4 Suppliers Table
+| Name | Contact | Phone | Balance | Items Supplied | Actions |
+
+13.5 Expenses Table
+| Date | Category | Description | Amount | Payment | Added By | Actions |
+
+13.6 Job Work Table
+| Artisan | Items | Gold Issued | Expected Return | Status | Actions |
+
+======================================================================
+14. DASHBOARD CARD DESIGNS
+======================================================================
+
+14.1 Stat Card
+- Icon (colored, left)
+- Value (large, bold)
+- Label (small, gray)
+- Trend indicator (up/down arrow + percentage)
+- Optional: mini sparkline
+
+14.2 Chart Card
+- Title
+- Time period selector
+- Chart area (line, bar, or pie)
+- Legend if needed
+
+14.3 Alert Card
+- Color-coded left border
+- Icon
+- Message text
+- Action link
+
+14.4 Rate Card
+- Metal name
+- Rate value (large)
+- Last updated time
+- Change indicator
+
+14.5 Stock Card
+- Metal name + purity
+- Weight (grams)
+- Estimated value
+- Trend
+
+======================================================================
+END OF UI DESIGN SPECIFICATION
+======================================================================

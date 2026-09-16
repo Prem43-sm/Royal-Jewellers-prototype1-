@@ -1,0 +1,520 @@
+SOFTWARE REQUIREMENTS SPECIFICATION
+PRIVATE INDIAN JEWELLERY SHOP MANAGEMENT SYSTEM
+VERSION 1.0
+
+======================================================================
+1. INTRODUCTION
+======================================================================
+
+1.1 Purpose
+This document specifies the requirements for a private Indian jewellery
+shop management web application. The system manages sales, inventory,
+purchases, customers, suppliers, accounts, job work, repairs, old gold
+exchange, and reporting for a private jewellery business.
+
+1.2 Scope
+The application is an internal business tool, NOT a public e-commerce
+storefront. It is used by the shop owner, manager, and staff.
+
+1.3 User Roles
+- OWNER: Full access to all features including financial data, settings,
+  backup, audit logs, user management, and sensitive operations.
+- MANAGER: Business operations access. Configurable financial access.
+  Cannot access backup, security settings, or user management.
+- STAFF: Operational access only. Cannot see profit, purchase costs,
+  owner withdrawals, sensitive financial reports, backup, or security.
+
+======================================================================
+2. FUNCTIONAL REQUIREMENTS
+======================================================================
+
+2.1 Authentication & Authorization
+- Secure login with email/password
+- Password hashing (bcrypt)
+- JWT-based session management
+- Role-based access control (OWNER, MANAGER, STAFF)
+- Password change functionality
+- Session timeout (configurable)
+- Auto-lock after inactivity
+
+2.2 Dashboard
+- Today's sales amount and count
+- Today's purchases amount
+- Estimated profit (owner/manager only)
+- Customer outstanding total
+- Gold stock weight and value
+- Silver stock weight and value
+- Current gold/silver rates
+- Quick action buttons
+- Sales chart (last 7/30 days)
+- Profit chart (owner/manager only)
+- Stock alerts
+- Customer due alerts
+- Supplier due alerts
+- Pending orders count
+- Pending job work count
+- Pending repairs count
+- Recent transactions
+
+2.3 Sales / POS
+- Barcode/QR scan or search for jewellery items
+- Customer selection/creation
+- Multiple items per sale
+- Jewellery price calculation:
+  * Net metal weight × rate = metal value
+  * Metal value + making + wastage + stone + other - discount = taxable
+  * Taxable + applicable tax = final value
+- Payment methods: Cash, UPI, Card, Bank Transfer, Credit, Other
+- Split payments supported
+- After sale: update stock, item status, customer balance, record payment
+- Store rate used at time of sale
+- Calculate estimated profit (owner/manager)
+- Generate invoice
+- Create audit record
+- Use database transactions for atomicity
+
+2.4 Invoices
+- Generated from actual transactions
+- Include: shop details, invoice number, date, customer, jewellery details
+- Include: weight, purity, HUID, rate, making, wastage, stone, other charges
+- Include: discount, taxable value, tax, total, payment details
+- Support: print, PDF, thermal receipt, A4 invoice
+
+2.5 Inventory (Jewellery Items)
+Fields per item:
+- Item ID (auto)
+- Item code (unique)
+- Barcode
+- QR code
+- Category
+- Metal type
+- Purity/Karat
+- Fineness
+- Gross weight
+- Stone weight
+- Other material weight
+- Net metal weight
+- Fine gold weight
+- Stone type
+- Hallmark status
+- HUID
+- Purchase cost
+- Selling price
+- Making charge
+- Wastage percentage
+- Supplier
+- Purchase date
+- Status
+- Image
+- Notes
+
+Statuses: IN_STOCK, SOLD, RESERVED, CUSTOM_ORDER, REPAIR, JOB_WORK,
+RETURNED, DAMAGED
+
+Operations: add, edit, view, search, filter, sort, stock movement,
+status changes, reserve, sell, repair, job work, return, damaged
+
+2.6 Metal Stock & Ledger
+- Track gold and silver stock
+- Metal movement tracking:
+  * Opening balance
+  * Purchases
+  * Sales
+  * Old gold received
+  * Artisan issue
+  * Artisan return
+  * Returns
+  * Adjustments
+  * Closing balance
+- Support purity/metal categories
+- Every movement references source transaction
+- No arbitrary silent balance changes
+- Daily gold/silver rate management
+
+2.7 Daily Gold/Silver Rates
+- Set daily buy/sell rates for different purities
+- Rate history
+- Rates used in transactions are stored with the transaction
+
+2.8 Customers
+- Customer profile: name, phone, email, address, GST number
+- Customer transactions history
+- Customer payments history
+- Credit/Udhaar tracking
+- Outstanding balance
+- Payment recording
+
+2.9 Suppliers
+- Supplier profile: name, contact, address, GST, bank details
+- Supplier transactions history
+- Supplier payments history
+- Outstanding balance
+- Payment recording
+
+2.10 Purchases
+- Select supplier
+- Add purchase items (jewellery)
+- Record cost, weight, purity
+- Update inventory on purchase
+- Update supplier balance
+- Update metal ledger
+- Record payment
+- Purchase history
+
+2.11 Old Gold Exchange
+Workflow:
+1. Select customer
+2. Record old gold: type, gross weight, stone weight, other material,
+   net weight, tested purity, testing information
+3. Valuation: rate, fine gold weight, value, deductions,
+   final accepted exchange value
+4. Apply exchange value to new sale if appropriate
+5. Store every exchange permanently with audit trail
+
+2.12 Gold Testing
+- Record test: item, gross weight, purity, testing method
+- Accepted weight, fine gold weight
+- Rate, value, deduction, final accepted value
+- Notes, attachments
+
+2.13 Customer Orders (Custom Orders)
+Quotation → Advance Received → Design Approved → Manufacturing →
+Ready → Delivered → Completed
+
+Track: customer, design, jewellery type, purity, estimated weight,
+estimated price, charges, advance, balance, dates, notes, status
+
+2.14 Job Work / Artisan
+- Track artisan, gold issued, purity, expected return
+- Track finished items, labour, issue date, expected date, actual return
+- Reconciliation
+- Status tracking
+- Auto-update metal ledger
+
+2.15 Repairs
+- Track: repair ID, customer, jewellery, problem
+- Received date, estimated cost, advance
+- Artisan assignment
+- Expected/actual delivery
+- Status, notes, images
+
+2.16 Accounts & Expenses
+Account types: Cash, Bank, UPI, Card, Other
+Track: income, expenses, customer payments, supplier payments,
+owner withdrawals, refunds, adjustments
+
+Expense categories: rent, electricity, salary, transport, packaging,
+maintenance, repair, advertisement, office, miscellaneous
+
+2.17 Reports
+- Sales report (date, category, purity, customer filters)
+- Purchases report
+- Profit report (owner/manager only)
+- Expenses report
+- Customer outstanding report
+- Supplier outstanding report
+- Gold stock report
+- Silver stock report
+- Purity-wise stock report
+- Category-wise sales report
+- Product-wise sales report
+- Gold weight movement report
+- Metal ledger report
+- Old gold exchange report
+- Job work report
+- Repairs report
+- Orders report
+- Payments report
+Export: PDF, Excel, CSV, print
+Charts from real data
+
+2.18 Day Closing
+Show: sales, purchases, expenses, cash/UPI/card/credit breakdown,
+customer payments, supplier payments, gold sold/purchased,
+expected cash, actual cash, difference
+Owner confirms day close
+Post-closing changes require authorization
+
+2.19 Document Vault
+Categories: GST, business, supplier, purchase bills, hallmark,
+insurance, agreements, customer documents
+Operations: upload, preview, download, rename, search, category
+Authorization checks on access
+No public URL exposure
+
+2.20 Global Search
+Search across: item code, barcode, QR, HUID, customer, phone,
+supplier, invoice, transaction, order, repair, job work
+Group results clearly
+
+2.21 Audit Logging
+Record: user, timestamp, action, entity, record ID, old/new values
+Track: rate changes, weight changes, purity changes, cost changes,
+price changes, payment changes, balance changes, stock adjustments,
+invoice changes, deletes, restores, permission changes
+
+2.22 Delete / Restore
+Soft delete for important records
+Trash → Restore → Permanent delete
+Permanent deletion requires owner authorization
+Staff cannot permanently destroy financial records
+
+2.23 Backup / Restore
+- Backup Now button
+- Automatic backup configuration
+- Backup history
+- Restore from backup
+- Export functionality
+- Local backup support
+
+======================================================================
+3. NON-FUNCTIONAL REQUIREMENTS
+======================================================================
+
+3.1 Security
+- Password hashing (bcrypt, salt rounds >= 10)
+- JWT tokens with expiry
+- CORS configuration
+- Input validation on all endpoints
+- SQL injection protection (ORM)
+- File upload validation
+- Authorization checks on every endpoint
+- No secrets in frontend code
+- Environment variables for configuration
+- No sensitive data in logs
+
+3.2 Performance
+- Pagination for large datasets
+- Database indexes on frequently queried fields
+- Efficient API responses (no over-fetching)
+- Lazy loading where appropriate
+
+3.3 Usability
+- Responsive design (desktop, tablet, mobile)
+- Clear error messages
+- Loading states
+- Empty states
+- Form validation feedback
+- Keyboard navigation
+- Accessible buttons and labels
+
+3.4 Data Integrity
+- Database transactions for multi-step operations
+- Historical rate/calculation preservation
+- No silent modification of financial data
+- Consistent stock tracking
+- Audit trail for important changes
+
+======================================================================
+4. JEWELLERY CALCULATION RULES
+======================================================================
+
+4.1 Net Metal Weight
+= Gross Weight - Stone Weight - Other Material Weight
+
+4.2 Fine Gold Weight
+= Net Metal Weight × (Purity / 24)
+(For gold items)
+
+4.3 Metal Value
+= Net Metal Weight × Rate per gram
+
+4.4 Making Charge
+= Configurable per item (fixed amount or percentage)
+
+4.5 Wastage
+= Configurable percentage of metal value or fixed amount
+
+4.6 Stone Charges
+= Fixed amount per item
+
+4.7 Taxable Value
+= Metal Value + Making + Wastage + Stone Charges + Other Charges - Discount
+
+4.8 Final Value
+= Taxable Value + Applicable Tax
+
+4.9 Old Gold Exchange Value
+= Fine Gold Weight × Buy Rate - Deductions
+
+4.10 Important: All calculation values (rate, purity, weight) used at
+transaction time must be stored with the transaction. Changing today's
+rate must NOT alter historical transactions.
+
+======================================================================
+5. DATABASE ENTITIES
+======================================================================
+
+Core Entities:
+- Users (id, name, email, password_hash, role, status, created_at)
+- Products/JewelleryItems (all jewellery fields)
+- Categories
+- MetalRates (date, metal, purity, buy_rate, sell_rate)
+- Customers
+- Suppliers
+- Sales / SaleItems
+- Invoices / InvoicePayments
+- Purchases / PurchaseItems
+- CustomerTransactions / CustomerPayments
+- SupplierTransactions / SupplierPayments
+- OldGoldExchanges / GoldTests
+- Orders / OrderItems
+- Artisans / JobWorks / JobWorkItems
+- Repairs
+- Expenses
+- Accounts / AccountTransactions
+- Documents
+- Notifications
+- AuditLogs
+- Settings
+
+All important entities include:
+- Primary keys (auto-increment or UUID)
+- Foreign keys with constraints
+- Timestamps (created_at, updated_at)
+- Status fields
+- Soft deletion where appropriate
+
+======================================================================
+6. API ENDPOINTS (RESTful)
+======================================================================
+
+Authentication:
+- POST /api/auth/login
+- POST /api/auth/logout
+- POST /api/auth/change-password
+- GET /api/auth/me
+
+Users (Owner only):
+- GET /api/users
+- POST /api/users
+- PUT /api/users/:id
+- DELETE /api/users/:id
+
+Dashboard:
+- GET /api/dashboard/stats
+- GET /api/dashboard/charts
+
+Metal Rates:
+- GET /api/metal-rates
+- POST /api/metal-rates
+- GET /api/metal-rates/today
+
+Products/Inventory:
+- GET /api/products (with pagination, filter, search)
+- POST /api/products
+- GET /api/products/:id
+- PUT /api/products/:id
+- DELETE /api/products/:id
+- POST /api/products/:id/status
+
+Customers:
+- GET /api/customers
+- POST /api/customers
+- GET /api/customers/:id
+- PUT /api/customers/:id
+- DELETE /api/customers/:id
+- GET /api/customers/:id/transactions
+- GET /api/customers/:id/payments
+- POST /api/customers/:id/payments
+
+Suppliers:
+- GET /api/suppliers
+- POST /api/suppliers
+- GET /api/suppliers/:id
+- PUT /api/suppliers/:id
+- DELETE /api/suppliers/:id
+- GET /api/suppliers/:id/transactions
+- POST /api/suppliers/:id/payments
+
+Sales:
+- GET /api/sales
+- POST /api/sales
+- GET /api/sales/:id
+- GET /api/sales/:id/invoice
+
+Purchases:
+- GET /api/purchases
+- POST /api/purchases
+- GET /api/purchases/:id
+
+Old Gold Exchange:
+- GET /api/old-gold
+- POST /api/old-gold
+- GET /api/old-gold/:id
+
+Gold Testing:
+- GET /api/gold-tests
+- POST /api/gold-tests
+
+Orders:
+- GET /api/orders
+- POST /api/orders
+- GET /api/orders/:id
+- PUT /api/orders/:id
+
+Job Work:
+- GET /api/job-works
+- POST /api/job-works
+- GET /api/job-works/:id
+- PUT /api/job-works/:id
+
+Repairs:
+- GET /api/repairs
+- POST /api/repairs
+- GET /api/repairs/:id
+- PUT /api/repairs/:id
+
+Expenses:
+- GET /api/expenses
+- POST /api/expenses
+- PUT /api/expenses/:id
+- DELETE /api/expenses/:id
+
+Accounts:
+- GET /api/accounts
+- GET /api/accounts/:id/transactions
+
+Reports:
+- GET /api/reports/sales
+- GET /api/reports/purchases
+- GET /api/reports/profit
+- GET /api/reports/expenses
+- GET /api/reports/customer-outstanding
+- GET /api/reports/supplier-outstanding
+- GET /api/reports/stock
+- GET /api/reports/metal-ledger
+
+Day Closing:
+- GET /api/day-closing/today
+- POST /api/day-closing/close
+
+Documents:
+- GET /api/documents
+- POST /api/documents/upload
+- GET /api/documents/:id
+- GET /api/documents/:id/download
+- DELETE /api/documents/:id
+
+Audit Logs:
+- GET /api/audit-logs (Owner only)
+
+Backup:
+- POST /api/backup/create
+- GET /api/backup/list
+- POST /api/backup/restore/:id
+
+Settings:
+- GET /api/settings
+- PUT /api/settings
+
+Global Search:
+- GET /api/search?q=query
+
+Notifications:
+- GET /api/notifications
+- PUT /api/notifications/:id/read
+
+======================================================================
+END OF SRS
+======================================================================

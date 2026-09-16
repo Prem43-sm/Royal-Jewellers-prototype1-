@@ -1,0 +1,1626 @@
+CODEX MASTER EXECUTION PROMPT
+PRIVATE INDIAN JEWELLERY SHOP MANAGEMENT WEB APPLICATION
+VERSION 1.0
+
+======================================================================
+IMPORTANT: THIS FILE IS THE MASTER EXECUTION COMMAND FOR CODEX
+======================================================================
+
+You are the lead software architect, senior full-stack developer,
+database engineer, UI/UX engineer, security engineer, QA engineer,
+DevOps engineer, and technical documentation engineer.
+
+Your task is to COMPLETE the entire Private Indian Jewellery Shop
+Management Web Application inside this repository.
+
+The repository contains these specification files:
+
+1. "SRS.txt"
+2. "UI designs.txt"
+3. "prompt for genrate web application"
+
+These files are the project's source of truth.
+
+DO NOT start coding before reading all three files completely.
+
+======================================================================
+MASTER RULES
+======================================================================
+
+1. Inspect the complete repository before modifying anything.
+2. Read SRS.txt completely.
+3. Read UI designs.txt completely.
+4. Read "prompt for genrate web application" completely.
+5. Inspect all existing source code and configuration.
+6. Reuse good existing code where possible.
+7. Do not unnecessarily delete or rewrite working code.
+8. Do not create fake functionality.
+9. Do not leave major features as TODO or "Coming Soon".
+10. Do not stop after making only the UI.
+11. Do not stop after creating only the backend.
+12. Do not stop after creating only the database.
+13. Integrate frontend, backend, database, authentication and business logic.
+14. Run the application.
+15. Test it.
+16. Find errors.
+17. Fix errors.
+18. Run tests again.
+19. Repeat until the project is stable.
+20. Build the production version.
+21. Verify the production build.
+22. Write/update documentation.
+23. At the end, report exactly what was implemented and what remains.
+
+If a requirement is unclear:
+- SRS.txt has priority for business functionality.
+- UI designs.txt has priority for UI/UX and visual behavior.
+- The generation prompt has priority for overall product direction.
+- Use sound engineering judgment for unspecified implementation details.
+- Do not invent unnecessary features.
+
+If two requirements conflict, identify the conflict, choose the safest
+consistent interpretation, implement it, and document the decision.
+
+======================================================================
+PHASE 0 — REPOSITORY AUDIT
+======================================================================
+
+Before coding:
+
+- List files and directories.
+- Identify frontend.
+- Identify backend.
+- Identify database.
+- Identify package manager.
+- Identify framework.
+- Identify existing routes.
+- Identify existing components.
+- Identify existing API.
+- Identify existing migrations.
+- Identify environment files.
+- Identify tests.
+- Identify build scripts.
+- Identify assets.
+- Identify existing documentation.
+
+Check for:
+- broken imports
+- obsolete dependencies
+- duplicate code
+- unfinished pages
+- placeholder components
+- hard-coded data
+- fake APIs
+- security problems
+- configuration problems
+
+Create an implementation plan internally and then execute it.
+
+Do not ask the user to repeat requirements already contained in the files.
+
+======================================================================
+PHASE 1 — TECHNOLOGY AND ARCHITECTURE
+======================================================================
+
+Use the existing technology stack if it is already established and
+compatible with the requirements.
+
+If no stack exists, choose a modern, stable and maintainable stack.
+
+Architecture should separate:
+
+FRONTEND
+- UI
+- routing
+- forms
+- state
+- API client
+- validation
+- reusable components
+
+BACKEND
+- API routes/controllers
+- services
+- business logic
+- validation
+- authorization
+- database access
+- file handling
+- reports
+- audit logging
+
+DATABASE
+- normalized relational structure
+- migrations
+- indexes
+- constraints
+- transactions
+
+Keep business calculations independent from UI code.
+
+Keep database logic independent from presentation logic.
+
+======================================================================
+PHASE 2 — DATABASE IMPLEMENTATION
+======================================================================
+
+Implement a proper relational database based on SRS.txt.
+
+Expected entities include, where required by the specifications:
+
+Users
+Roles
+Permissions
+UserRoles
+RolePermissions
+
+Products
+JewelleryItems
+Categories
+Purities
+MetalRates
+StockMovements
+
+Customers
+CustomerTransactions
+CustomerPayments
+
+Suppliers
+SupplierTransactions
+SupplierPayments
+
+Sales
+SaleItems
+Invoices
+InvoicePayments
+
+Purchases
+PurchaseItems
+
+OldGoldExchanges
+GoldTests
+
+Orders
+OrderItems
+
+Artisans
+JobWorks
+JobWorkItems
+
+Repairs
+
+Expenses
+Accounts
+AccountTransactions
+
+Documents
+Notifications
+AuditLogs
+Backups
+Settings
+
+Use:
+- primary keys
+- foreign keys
+- unique constraints
+- indexes
+- timestamps
+- status fields
+- soft deletion where appropriate
+
+Never use the UI as the source of truth for financial data.
+
+Use database transactions for operations that modify multiple related
+records.
+
+Create migrations rather than manually modifying production schemas.
+
+Create seed/demo data only when appropriate.
+
+======================================================================
+PHASE 3 — JEWELLERY DATA MODEL
+======================================================================
+
+The application is NOT a generic retail inventory system.
+
+Jewellery items may require:
+
+- item ID
+- item code
+- barcode
+- QR code
+- category
+- metal
+- purity
+- fineness
+- gross weight
+- stone weight
+- other material weight
+- net metal weight
+- fine gold weight
+- stone type
+- hallmark status
+- HUID
+- purchase cost
+- selling price
+- making charge
+- wastage
+- supplier
+- purchase date
+- status
+- image
+- notes
+
+High-value jewellery must be individually trackable where required.
+
+Possible statuses:
+
+IN STOCK
+SOLD
+RESERVED
+CUSTOM ORDER
+REPAIR
+JOB WORK
+RETURNED
+DAMAGED
+
+Do not assume every jewellery item has identical fields.
+
+======================================================================
+PHASE 4 — JEWELLERY CALCULATION ENGINE
+======================================================================
+
+Implement jewellery calculations as modular, reusable and testable
+services.
+
+Support configurable:
+
+- gold/silver rates
+- karat/purity
+- fineness
+- making charges
+- wastage
+- stone charges
+- other charges
+- discounts
+- applicable tax fields
+
+Example conceptual flow:
+
+NET METAL WEIGHT
+x RATE
+= METAL VALUE
+
+METAL VALUE
++ MAKING
++ WASTAGE
++ STONE CHARGES
++ OTHER CHARGES
+- DISCOUNT
+= TAXABLE VALUE
+
+TAXABLE VALUE
++ APPLICABLE TAX
+= FINAL VALUE
+
+Use the exact calculation rules specified in SRS.txt.
+
+Do not hard-code tax rates or business assumptions that are intended
+to be configurable.
+
+Every important calculation must be reproducible from stored
+transaction data.
+
+Historical transactions must retain the rate/calculation values used
+at transaction time. Changing today's rate must not alter old invoices.
+
+Create unit tests for every calculation.
+
+======================================================================
+PHASE 5 — AUTHENTICATION
+======================================================================
+
+Implement secure authentication.
+
+Support, where specified:
+
+OWNER
+MANAGER
+STAFF
+
+Implement:
+- secure password hashing
+- login
+- logout
+- session/token handling
+- password reset/change
+- auto-lock/session timeout if required
+
+Never store plain-text passwords.
+
+Never place secrets in frontend code.
+
+Use environment variables for secrets.
+
+======================================================================
+PHASE 6 — ROLE BASED ACCESS CONTROL
+======================================================================
+
+Implement backend-enforced RBAC.
+
+Do not merely hide buttons in the frontend.
+
+Permissions may include:
+
+sales
+inventory
+customers
+suppliers
+purchases
+profit
+purchase_cost
+financial_reports
+expenses
+settings
+backup
+audit_logs
+delete_records
+restore_records
+user_management
+
+Example:
+
+OWNER:
+Full access.
+
+MANAGER:
+Business operations and configurable financial access.
+
+STAFF:
+Operational access only.
+
+Staff should not automatically see:
+- profit
+- purchase costs
+- owner withdrawals
+- sensitive financial reports
+- backup
+- security settings
+
+Exact permissions must follow SRS.txt.
+
+Test every important permission using different roles.
+
+======================================================================
+PHASE 7 — UI/UX IMPLEMENTATION
+======================================================================
+
+Read "UI designs.txt" carefully.
+
+Treat it as a real UI specification, not optional inspiration.
+
+The entire application must feel like ONE product.
+
+Design direction:
+
+- premium Indian jewellery-business aesthetic
+- modern SaaS dashboard
+- warm white/ivory base
+- dark charcoal text
+- subtle champagne-gold accent
+- clean cards
+- subtle borders
+- soft shadows
+- professional tables
+- clean typography
+- restrained animations
+- excellent spacing
+- high readability
+
+Do NOT create:
+- public e-commerce storefront
+- flashy jewellery landing page
+- cryptocurrency dashboard
+- sci-fi interface
+- excessive gradients
+- unnecessary decorative elements
+
+The application is a private internal business system.
+
+======================================================================
+PHASE 8 — GLOBAL APPLICATION SHELL
+======================================================================
+
+Create a consistent:
+
+LEFT SIDEBAR
+- Shop logo/name
+- Dashboard
+- Sales
+- Invoices
+- Inventory
+- Metal Stock
+- Old Gold Exchange
+- Purchases
+- Customers
+- Suppliers
+- Orders
+- Job Work
+- Repairs
+- Accounts
+- Reports
+- Documents
+- Settings
+
+TOP HEADER
+- Global search
+- Gold rate
+- Silver rate
+- Notifications
+- Security/lock indicator
+- User profile
+- Date
+
+Use responsive behavior.
+
+Desktop:
+Sidebar + main content.
+
+Tablet:
+Collapsible sidebar.
+
+Mobile:
+Compact header + suitable bottom/mobile navigation.
+
+======================================================================
+PHASE 9 — REQUIRED APPLICATION MODULES
+======================================================================
+
+Implement every module required by the SRS and UI design.
+
+At minimum, verify:
+
+1. Authentication
+2. Dashboard
+3. Sales
+4. Invoices
+5. Inventory
+6. Jewellery Item Details
+7. Metal Stock
+8. Metal Ledger
+9. Daily Gold/Silver Rates
+10. Customers
+11. Customer Credit/Udhaar
+12. Suppliers
+13. Purchases
+14. Old Gold Exchange
+15. Gold Testing
+16. Customer Orders
+17. Job Work / Artisan
+18. Repairs
+19. Accounts
+20. Expenses
+21. Reports
+22. Day Closing
+23. Documents
+24. Security
+25. Audit Logs
+26. Backup/Restore
+27. Settings
+28. Staff Roles/Permissions
+
+Every page must have actual functionality.
+
+======================================================================
+PHASE 10 — DASHBOARD
+======================================================================
+
+Implement a real dashboard using database data.
+
+Show appropriate:
+- today's sales
+- purchases
+- estimated profit
+- customer outstanding
+- gold stock
+- silver stock
+- gold/silver rates
+- quick actions
+- sales charts
+- profit charts
+- stock alerts
+- customer due alerts
+- supplier due alerts
+- pending orders
+- pending job work
+- pending repairs
+- recent transactions
+
+No fake static values in production mode.
+
+======================================================================
+PHASE 11 — SALES / POS
+======================================================================
+
+Create a fast jewellery POS.
+
+Workflow:
+
+SCAN/SEARCH JEWELLERY
+-> SELECT CUSTOMER
+-> VERIFY CALCULATION
+-> SELECT PAYMENT
+-> COMPLETE SALE
+-> GENERATE INVOICE
+
+Support:
+- multiple items
+- barcode lookup
+- customer lookup
+- cash
+- UPI
+- card
+- bank
+- credit
+- other payment
+- split payments where required
+
+After sale:
+- update stock
+- update item status
+- update customer balance
+- record payment
+- store rate used
+- calculate transaction values
+- calculate estimated profit
+- create invoice
+- create audit record
+
+Use atomic database transactions.
+
+======================================================================
+PHASE 12 — INVENTORY
+======================================================================
+
+Implement:
+
+- add jewellery
+- edit jewellery
+- view jewellery
+- search
+- filter
+- sort
+- barcode/QR support where required
+- stock movement
+- status changes
+- reserve
+- sell
+- repair
+- job work
+- return
+- damaged handling
+
+Never let stock become inconsistent because of a frontend-only update.
+
+======================================================================
+PHASE 13 — OLD GOLD EXCHANGE
+======================================================================
+
+Implement a clear workflow:
+
+STEP 1
+Customer
+
+STEP 2
+Old gold:
+- type
+- gross weight
+- stone weight
+- other material
+- net weight
+- tested purity
+- testing information
+
+STEP 3
+Valuation:
+- rate
+- fine gold weight
+- value
+- deductions
+- final accepted exchange value
+
+STEP 4
+Apply exchange value to a new sale if appropriate.
+
+Store every exchange permanently and audit it.
+
+======================================================================
+PHASE 14 — GOLD TESTING
+======================================================================
+
+Implement gold testing records.
+
+Store:
+- item
+- gross weight
+- purity
+- testing method
+- accepted weight
+- fine gold weight
+- rate
+- value
+- deduction
+- final accepted value
+- notes
+- attachments if required
+
+======================================================================
+PHASE 15 — PURCHASES AND SUPPLIERS
+======================================================================
+
+Purchase flow:
+
+SUPPLIER
+-> PURCHASE
+-> ITEMS
+-> COST
+-> PAYMENT
+-> INVENTORY
+-> METAL LEDGER
+
+Update:
+- inventory
+- supplier balance
+- metal movement
+- purchase history
+
+======================================================================
+PHASE 16 — METAL LEDGER
+======================================================================
+
+Implement metal movement tracking.
+
+Track:
+- opening balance
+- purchases
+- sales
+- old gold
+- artisan issue
+- artisan return
+- returns
+- adjustments
+- closing balance
+
+Support appropriate purity/metal categories.
+
+Every movement must reference a source transaction where possible.
+
+Do not allow arbitrary silent balance changes.
+
+======================================================================
+PHASE 17 — CUSTOMER ORDERS
+======================================================================
+
+Implement:
+
+Quotation
+-> Advance Received
+-> Design Approved
+-> Manufacturing
+-> Ready
+-> Delivered
+-> Completed
+
+Track:
+- customer
+- design
+- jewellery type
+- purity
+- estimated weight
+- estimated price
+- charges
+- advance
+- balance
+- dates
+- notes
+- status
+
+======================================================================
+PHASE 18 — JOB WORK / ARTISAN
+======================================================================
+
+Track:
+
+- artisan
+- gold issued
+- purity
+- expected return
+- finished items
+- labour
+- issue date
+- expected date
+- actual return
+- reconciliation
+- status
+
+Update metal ledger automatically.
+
+======================================================================
+PHASE 19 — REPAIRS
+======================================================================
+
+Track:
+- repair ID
+- customer
+- jewellery
+- problem
+- received date
+- estimated cost
+- advance
+- artisan
+- expected delivery
+- actual delivery
+- status
+- notes
+- images if required
+
+======================================================================
+PHASE 20 — ACCOUNTS AND EXPENSES
+======================================================================
+
+Support:
+
+Cash
+Bank
+UPI
+Card
+Other
+
+Track:
+- income
+- expenses
+- customer payments
+- supplier payments
+- owner withdrawals
+- refunds
+- adjustments where legitimately required
+
+Expenses:
+- rent
+- electricity
+- salary
+- transport
+- packaging
+- maintenance
+- repair
+- advertisement
+- office
+- miscellaneous
+
+======================================================================
+PHASE 21 — INVOICES
+======================================================================
+
+Invoices must be generated from actual transactions.
+
+Include, where applicable:
+- shop details
+- invoice number
+- date
+- customer
+- jewellery
+- weight
+- purity
+- HUID
+- rate
+- making
+- wastage
+- stone
+- other charges
+- discount
+- taxable value
+- applicable tax fields
+- total
+- payment details
+
+Support:
+- print
+- PDF
+- thermal receipt
+- A4 invoice
+- simple receipt
+
+======================================================================
+PHASE 22 — REPORTS
+======================================================================
+
+Implement real database-backed reports.
+
+Include as required:
+
+Sales
+Purchases
+Profit
+Expenses
+Customer Outstanding
+Supplier Outstanding
+Gold Stock
+Silver Stock
+Purity-wise Stock
+Category-wise Sales
+Product-wise Sales
+Gold Weight Movement
+Metal Ledger
+Old Gold
+Job Work
+Repairs
+Orders
+Payments
+
+Filters:
+- date
+- category
+- purity
+- customer
+- supplier
+- status
+- payment method
+
+Exports where specified:
+- PDF
+- Excel
+- CSV
+- print
+
+Charts must be derived from real data.
+
+======================================================================
+PHASE 23 — DAY CLOSING
+======================================================================
+
+Create day closing.
+
+Show:
+- sales
+- purchases
+- expenses
+- cash sales
+- UPI
+- card
+- credit
+- customer payments
+- supplier payments
+- gold sold
+- gold purchased
+- expected cash
+- actual cash
+- difference
+
+Owner confirms day close.
+
+After closing, important changes require authorization according to SRS.
+
+======================================================================
+PHASE 24 — DOCUMENT VAULT
+======================================================================
+
+Implement secure document management.
+
+Categories may include:
+- GST
+- business documents
+- supplier documents
+- purchase bills
+- hallmark documents
+- insurance
+- agreements
+- customer documents
+
+Implement:
+- upload
+- preview where supported
+- download
+- rename
+- search
+- category
+- date
+- related entity
+
+Protect documents using authorization checks.
+
+Do not expose private files through public URLs.
+
+======================================================================
+PHASE 25 — GLOBAL SEARCH
+======================================================================
+
+Implement global search across appropriate entities:
+
+- item code
+- barcode
+- QR
+- HUID
+- customer
+- phone
+- supplier
+- invoice
+- transaction
+- order
+- repair
+- job work
+
+Group results clearly.
+
+======================================================================
+PHASE 26 — AUDIT LOGGING
+======================================================================
+
+Audit important operations.
+
+Record:
+- user
+- timestamp
+- action
+- entity
+- record ID
+- old value where appropriate
+- new value where appropriate
+
+Track:
+- rate changes
+- weight changes
+- purity changes
+- cost changes
+- price changes
+- payment changes
+- balance changes
+- stock adjustments
+- invoice changes
+- deletes
+- restores
+- permission changes
+
+Never silently overwrite important financial information.
+
+======================================================================
+PHASE 27 — DELETE / RESTORE
+======================================================================
+
+Use soft delete for important business records where required.
+
+Deleted records:
+-> Trash
+-> Restore
+-> Permanent delete
+
+Permanent deletion should require owner authorization.
+
+Do not allow normal staff to permanently destroy financial records.
+
+======================================================================
+PHASE 28 — BACKUP / RESTORE
+======================================================================
+
+Implement a reliable backup strategy.
+
+Provide:
+- Backup Now
+- automatic backup configuration
+- backup history
+- restore
+- export
+
+Support local backup.
+
+Structure the system so encrypted cloud backup can be added later.
+
+Do not claim backup functionality works unless it actually does.
+
+Test restore, not just backup creation.
+
+======================================================================
+PHASE 29 — SECURITY REVIEW
+======================================================================
+
+Perform a security review after implementation.
+
+Check:
+- authentication
+- authorization
+- password storage
+- session handling
+- input validation
+- injection protection
+- file upload security
+- access control
+- secrets
+- CORS/configuration
+- error leakage
+- insecure direct object references
+- exposed private documents
+- sensitive logs
+
+Never commit secrets.
+
+Check .gitignore and environment handling.
+
+======================================================================
+PHASE 30 — ERROR HANDLING
+======================================================================
+
+Every feature must handle:
+
+- loading
+- empty state
+- validation error
+- API error
+- database error
+- permission denied
+- network failure
+- unexpected error
+
+Use clear user-friendly messages.
+
+Do not expose stack traces, SQL errors, secrets or internal implementation
+details to normal users.
+
+Log useful technical details securely for developers.
+
+======================================================================
+PHASE 31 — TESTING STRATEGY
+======================================================================
+
+Do not consider the project complete without testing.
+
+Create/run:
+
+A. UNIT TESTS
+For:
+- purity
+- fineness
+- weight
+- gold value
+- making
+- wastage
+- stone charges
+- discounts
+- tax calculations
+- old gold exchange
+- customer balances
+- supplier balances
+
+B. DATABASE/INTEGRATION TESTS
+For:
+- sales
+- purchases
+- payments
+- inventory
+- stock movement
+- metal ledger
+- orders
+- job work
+- repairs
+
+C. API TESTS
+For:
+- authentication
+- authorization
+- CRUD
+- validation
+- error cases
+
+D. UI/END-TO-END TESTS
+For important workflows:
+- login
+- create customer
+- create jewellery
+- create sale
+- payment
+- invoice
+- purchase
+- old gold exchange
+- order
+- repair
+- job work
+- report
+
+E. SECURITY TESTS
+Verify staff cannot access owner-only operations.
+
+======================================================================
+PHASE 32 — MANUAL QA CHECKLIST
+======================================================================
+
+After automated tests, manually inspect the application.
+
+Test every navigation item.
+
+For every page check:
+- page loads
+- title is correct
+- buttons work
+- forms work
+- validation works
+- tables work
+- search works
+- filters work
+- edit works
+- delete/restore works where required
+- permissions work
+- loading states work
+- empty states work
+- error states work
+
+Check:
+- browser console
+- network errors
+- backend logs
+- database logs
+- broken links
+- broken routes
+- missing assets
+- overflow
+- layout problems
+
+======================================================================
+PHASE 33 — RESPONSIVE QA
+======================================================================
+
+Verify:
+
+1440px
+1280px
+1024px
+768px
+430px
+390px
+360px
+
+Check:
+- sidebar
+- tables
+- forms
+- dialogs
+- charts
+- POS
+- inventory
+- customer pages
+- reports
+- mobile navigation
+
+Do not simply shrink desktop content.
+
+Make tables usable on mobile.
+
+======================================================================
+PHASE 34 — ERROR-FIX LOOP
+======================================================================
+
+This is mandatory.
+
+After implementation:
+
+1. Start frontend.
+2. Start backend.
+3. Start database.
+4. Run migrations.
+5. Run tests.
+6. Build production version.
+7. Inspect errors.
+
+For every error:
+
+1. Reproduce it.
+2. Identify root cause.
+3. Fix the root cause.
+4. Run the relevant test.
+5. Run broader tests.
+6. Rebuild.
+7. Recheck related functionality.
+
+Do not hide errors just to make the application appear to work.
+
+Do not use temporary hacks unless clearly documented.
+
+After fixing one problem, check for regressions.
+
+Repeat until the project reaches a stable state.
+
+======================================================================
+PHASE 35 — BUILD VERIFICATION
+======================================================================
+
+Run the actual production build.
+
+Verify:
+- frontend build succeeds
+- backend starts
+- migrations succeed
+- production configuration is valid
+- routes work
+- assets load
+- database connection works
+- no critical console errors
+- no critical runtime errors
+
+If the build fails:
+- inspect the actual error
+- fix it
+- run build again
+
+Do not report success unless the build has actually succeeded.
+
+======================================================================
+PHASE 36 — PERFORMANCE
+======================================================================
+
+Check for obvious performance problems.
+
+Avoid:
+- unnecessary API calls
+- unnecessary database queries
+- huge unpaginated tables
+- duplicate requests
+- excessive frontend re-rendering
+- loading entire datasets when pagination is appropriate
+
+Use pagination/filtering for large datasets.
+
+Add indexes for frequently searched fields where appropriate.
+
+======================================================================
+PHASE 37 — ACCESSIBILITY
+======================================================================
+
+Implement reasonable accessibility:
+
+- keyboard navigation
+- visible focus states
+- form labels
+- useful error messages
+- semantic HTML where appropriate
+- sufficient text contrast
+- accessible buttons
+- meaningful icons/labels
+
+Do not rely on icons alone for critical actions.
+
+======================================================================
+PHASE 38 — DOCUMENTATION
+======================================================================
+
+Create/update documentation based on the ACTUAL implementation.
+
+At minimum document:
+
+README
+- project purpose
+- features
+- technology stack
+- prerequisites
+- installation
+- environment variables
+- database setup
+- migrations
+- seed/demo data
+- development commands
+- testing commands
+- production build
+- deployment notes
+- backup/restore
+
+ARCHITECTURE DOCUMENT
+- frontend structure
+- backend structure
+- database structure
+- API architecture
+- authentication
+- RBAC
+- business logic
+
+BUSINESS LOGIC DOCUMENT
+- jewellery calculations
+- purity/fineness
+- weight
+- making
+- wastage
+- old gold
+- stock
+- metal ledger
+- profit logic
+
+SECURITY DOCUMENT
+- authentication
+- authorization
+- secrets
+- documents
+- backups
+- audit logs
+
+TESTING DOCUMENT
+- test commands
+- test coverage areas
+- important workflows
+- known limitations
+
+======================================================================
+PHASE 39 — CODE QUALITY
+======================================================================
+
+Keep code:
+
+- modular
+- readable
+- maintainable
+- typed where the stack supports typing
+- reusable
+- documented where complexity requires it
+
+Avoid:
+- huge components
+- duplicated business logic
+- duplicated calculations
+- hard-coded business rules
+- magic numbers
+- unnecessary dependencies
+- dead code
+- unused imports
+- debug prints
+- commented-out abandoned implementations
+
+Use reusable components and services.
+
+======================================================================
+PHASE 40 — FINAL FULL SYSTEM TEST
+======================================================================
+
+Perform an end-to-end business scenario.
+
+Example:
+
+1. Login as owner.
+2. Add gold rate.
+3. Add supplier.
+4. Add jewellery item.
+5. Add customer.
+6. Create sale.
+7. Calculate jewellery price.
+8. Receive partial payment.
+9. Verify customer outstanding.
+10. Verify inventory.
+11. Verify metal ledger.
+12. Generate invoice.
+13. Record customer payment.
+14. Verify balance.
+15. Add expense.
+16. Generate report.
+17. Create old gold exchange.
+18. Verify exchange value.
+19. Create custom order.
+20. Create artisan job work.
+21. Return artisan gold.
+22. Reconcile metal ledger.
+23. Create repair.
+24. Close day.
+25. Check audit log.
+26. Backup database.
+27. Restore backup in a safe test environment if possible.
+28. Verify data integrity.
+
+Fix every issue discovered.
+
+======================================================================
+PHASE 41 — FINAL REVIEW AGAINST SPECIFICATIONS
+======================================================================
+
+Before declaring completion:
+
+Read SRS.txt again.
+
+Create an internal checklist of every requirement.
+
+Read UI designs.txt again.
+
+Verify every major UI requirement.
+
+Read the generation prompt again.
+
+Verify overall product intent.
+
+For each requirement:
+- implemented
+- tested
+- documented
+
+Do not mark a requirement complete just because a page exists.
+
+A requirement is complete only when its actual behavior works.
+
+======================================================================
+PHASE 42 — FINAL CLEANUP
+======================================================================
+
+Before finishing:
+
+Remove:
+- unused files
+- temporary test data where inappropriate
+- debug logging
+- TODO placeholders
+- fake APIs
+- fake production values
+- unused imports
+- broken links
+- broken routes
+
+Keep:
+- required documentation
+- tests
+- migrations
+- configuration examples
+- useful seed data
+- reusable components
+
+Ensure .gitignore protects:
+- environment secrets
+- local databases where appropriate
+- generated temporary files
+- private uploads
+- build artifacts as appropriate
+
+======================================================================
+PHASE 43 — FINAL REPORT
+======================================================================
+
+At the end provide a concise but complete report.
+
+Include:
+
+1. Project status
+2. Technology stack
+3. Architecture
+4. Database
+5. Frontend
+6. Backend
+7. Authentication
+8. RBAC
+9. Jewellery calculation engine
+10. Inventory
+11. Sales/POS
+12. Old gold exchange
+13. Metal ledger
+14. Purchases
+15. Customers
+16. Suppliers
+17. Orders
+18. Job work
+19. Repairs
+20. Accounts
+21. Reports
+22. Documents
+23. Audit logs
+24. Backup/restore
+25. Security
+26. Tests run
+27. Build result
+28. Documentation created
+29. Known limitations
+30. Recommended next steps
+
+For each remaining limitation, explain:
+- what is missing
+- why it is missing
+- what would be required to complete it
+
+Do not falsely claim full completion.
+
+======================================================================
+ABSOLUTE "DO NOT" LIST
+======================================================================
+
+DO NOT:
+
+- skip reading the specification files
+- build only a visual mockup
+- use static data for real functionality
+- make buttons that do nothing
+- fake API responses
+- fake database persistence
+- skip validation
+- skip authorization
+- skip testing
+- skip error fixing
+- hard-code secrets
+- expose private documents
+- silently modify historical transactions
+- silently modify historical rates
+- silently change stock
+- silently change balances
+- hard-code tax assumptions that should be configurable
+- delete working code without reason
+- overwrite the entire project unnecessarily
+- stop when the first build succeeds
+- stop when the UI looks good
+- claim a feature is implemented when only its page exists
+
+======================================================================
+DEFINITION OF DONE
+======================================================================
+
+The project is DONE only when:
+
+[ ] Specification files have been read
+[ ] Existing project has been inspected
+[ ] Architecture is implemented
+[ ] Database is implemented
+[ ] Migrations work
+[ ] Frontend works
+[ ] Backend works
+[ ] Authentication works
+[ ] RBAC works
+[ ] Jewellery calculations work
+[ ] Inventory works
+[ ] Sales works
+[ ] Purchases work
+[ ] Customers work
+[ ] Suppliers work
+[ ] Old gold exchange works
+[ ] Metal ledger works
+[ ] Orders work
+[ ] Job work works
+[ ] Repairs work
+[ ] Accounts work
+[ ] Reports work
+[ ] Invoices work
+[ ] Documents work
+[ ] Audit logs work
+[ ] Backup/restore works
+[ ] Responsive UI works
+[ ] Validation works
+[ ] Error handling works
+[ ] Unit tests pass
+[ ] Integration/API tests pass
+[ ] Important end-to-end workflows pass
+[ ] Security review completed
+[ ] Production build succeeds
+[ ] Documentation is updated
+[ ] No major TODO/placeholder functionality remains
+
+======================================================================
+FINAL COMMAND
+======================================================================
+
+START NOW.
+
+First inspect the repository and read:
+
+"SRS.txt"
+"UI designs.txt"
+"prompt for genrate web application"
+
+Then implement the complete application.
+
+Do not merely tell me what you would do.
+
+Do the work.
+
+Continue through implementation, integration, testing, debugging,
+production build verification and documentation.
+
+When an error occurs, diagnose and fix it.
+
+When a test fails, diagnose and fix it.
+
+When a requirement is incomplete, implement it.
+
+When a UI problem is found, fix it according to UI designs.txt.
+
+When a business-logic problem is found, fix it according to SRS.txt.
+
+Only finish after the complete verification cycle.
+
+BUILD -> TEST -> FIND ERRORS -> FIX -> TEST AGAIN -> BUILD AGAIN
+-> REVIEW SPECIFICATIONS -> DOCUMENT -> FINAL REPORT
+
+The goal is a real, working, maintainable private Indian Jewellery Shop
+Management Web Application.

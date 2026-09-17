@@ -5,6 +5,7 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 COPY . .
+RUN test -f prisma/dev.db && echo "dev.db present in build context"
 RUN npx prisma generate --schema=prisma/schema.prisma
 RUN npm run build
 
@@ -17,5 +18,8 @@ COPY --from=builder /app/package.json ./
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
+
+RUN npx prisma generate --schema=prisma/schema.prisma
+RUN node -e "const { PrismaClient } = require('@prisma/client'); const c = new PrismaClient(); c.user.count().then(n => { console.log('DB CHECK OK: user rows =', n); return c['\$disconnect'](); }).then(() => process.exit(0)).catch(e => { console.error('DB CHECK FAILED:', e && e.message); console.error(e); process.exit(1); });"
 
 CMD ["node", "dist/index.js"]

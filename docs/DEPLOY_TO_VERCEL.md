@@ -35,8 +35,15 @@ schema and code changes and is out of scope for the demo-only setup.
   with `serverless-http`.
 - `.vercelignore` - keeps `node_modules`, `dist`, and `uploads` out of the
   deployment upload.
-- `backend/src/index.ts` - one-line guard so `app.listen` is skipped when
-  `process.env.VERCEL` is set.
+- `backend/src/index.ts` - guard so `app.listen` is skipped when
+  `process.env.VERCEL` is set; CORS switched from wildcard `*` to an
+  environment-driven origin allow-list (`CORS_ORIGIN`, defaults to localhost
+  dev origins); uploads dir creation wrapped in a non-fatal guard.
+- `backend/src/routes/documents.ts`, `backend/src/routes/backup.ts` - module
+  load-time `fs.mkdirSync` calls are guarded so a read-only serverless
+  filesystem cannot crash the function on boot.
+- `.env.example` - lists the names of the environment variables used by the
+  project (no secrets).
 
 ## Deploy steps
 
@@ -52,14 +59,31 @@ vercel --prod
 - The project is detected as "Other", installs root + `frontend` dependencies,
   runs `prisma generate` (Linux engine, correct for the lambda), builds the
   frontend to `frontend/dist`, and bundles the `api/index.ts` function.
-- `DATABASE_URL`, `JWT_SECRET`, `JWT_EXPIRES_IN` come from `vercel.json`.
+- `DATABASE_URL` comes from `vercel.json`. Set `JWT_SECRET`,
+  `JWT_EXPIRES_IN`, and `CORS_ORIGIN` as env vars in the Vercel project
+  settings (the backend has safe in-code fallbacks so the app boots without
+  them, but you should set a real `JWT_SECRET` for production).
 
 ### Option B - Import from GitHub at vercel.com
 
 1. Push this repository to a GitHub repo.
 2. On vercel.com: *Add New -> Project -> Import* the repo.
 3. Framework Preset: **Other** (or leave auto). `vercel.json` supplies the rest.
-4. Deploy.
+4. Add the environment variables (see below) under *Project -> Settings -> Environment Variables*.
+5. Deploy.
+
+## Environment variables
+
+See `.env.example`. Names actually used by the project:
+
+| Variable | Required on Vercel | Purpose |
+| -------- | ------------------ | ------- |
+| `DATABASE_URL` | Yes (set by `vercel.json`) | SQLite connection string for the bundled demo DB |
+| `JWT_SECRET` | Recommended | JWT signing secret (safe fallback exists in code) |
+| `JWT_EXPIRES_IN` | No | JWT expiry (default `24h`) |
+| `CORS_ORIGIN` | No | Comma-separated allow-list of origins (defaults to `http://localhost:3000,http://localhost:5000`); not needed for same-origin use |
+| `PORT` | No | Local develop-machine only (Vercel ignores it) |
+| `VITE_API_URL` | No | Unused - the frontend calls same-origin `/api` |
 
 ## Local preview of the serverless setup
 

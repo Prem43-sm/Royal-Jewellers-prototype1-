@@ -14,8 +14,6 @@
     { "source": "/(.*)", "destination": "/" }
   ],
   "env": {
-    "DATABASE_URL": "file:./backend/prisma/dev.db",
-    "JWT_SECRET": "jewellery-shop-secret-key-change-in-production-2026",
-    "JWT_EXPIRES_IN": "24h"
+    "DATABASE_URL": "file:./backend/prisma/dev.db"
   }
 }

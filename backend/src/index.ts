@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import path from 'path';
+import fs from 'fs';
 
 dotenv.config();
 
@@ -37,12 +38,28 @@ import notificationRoutes from './routes/notifications';
 const app = express();
 const PORT = parseInt(process.env.PORT || '5000');
 
+const ALLOWED_ORIGINS = (process.env.CORS_ORIGIN || 'http://localhost:3000,http://localhost:5000')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
+
 app.use(helmet({ contentSecurityPolicy: false }));
-app.use(cors({ origin: '*', credentials: true }));
+app.use(
+  cors({
+    origin: (origin, cb) => {
+      if (!origin || ALLOWED_ORIGINS.includes(origin)) return cb(null, true);
+      return cb(null, false);
+    },
+    credentials: true,
+  })
+);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 const uploadsPath = path.join(__dirname, '../uploads');
+try {
+  fs.mkdirSync(uploadsPath, { recursive: true });
+} catch {}
 app.use('/uploads', express.static(uploadsPath));
 
 const apiRouter = express.Router();

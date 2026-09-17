@@ -11,7 +11,9 @@ const router = Router();
 router.use(authMiddleware);
 
 const backupDir = path.join(__dirname, '../../backups');
-fs.mkdirSync(backupDir, { recursive: true });
+try {
+  fs.mkdirSync(backupDir, { recursive: true });
+} catch {}
 
 router.post('/create', requireRole(['OWNER']), async (req: AuthRequest, res) => {
   const dbPath = path.join(__dirname, '../../prisma/dev.db');

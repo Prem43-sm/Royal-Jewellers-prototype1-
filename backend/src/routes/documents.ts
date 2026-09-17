@@ -10,7 +10,9 @@ import { logAudit } from '../lib/audit';
 const router = Router();
 
 const uploadDir = path.join(__dirname, '../../uploads/documents');
-fs.mkdirSync(uploadDir, { recursive: true });
+try {
+  fs.mkdirSync(uploadDir, { recursive: true });
+} catch {}
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, uploadDir),

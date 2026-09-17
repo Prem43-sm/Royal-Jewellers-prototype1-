@@ -95,11 +95,9 @@ app.use('/api', apiRouter);
 app.use(notFound);
 app.use(errorHandler);
 
-if (!process.env.VERCEL) {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-    console.log(`API available at http://localhost:${PORT}/api`);
-  });
-}
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  console.log(`API available at http://localhost:${PORT}/api`);
+});
 
 export default app;

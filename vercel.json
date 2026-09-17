@@ -1,19 +1,27 @@
 {
-  "version": 2,
-  "framework": null,
-  "installCommand": "npm install && npm --prefix frontend install",
-  "buildCommand": "npm run build",
-  "outputDirectory": "frontend/dist",
-  "functions": {
-    "api/index.ts": {
-      "includeFiles": "backend/prisma/dev.db"
+  "services": {
+    "frontend": {
+      "root": "frontend",
+      "framework": "vite"
+    },
+    "backend": {
+      "root": "backend"
     }
   },
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/index" },
-    { "source": "/(.*)", "destination": "/" }
-  ],
-  "env": {
-    "DATABASE_URL": "file:./backend/prisma/dev.db"
-  }
+    {
+      "source": "/api(/.*)?",
+      "destination": {
+        "type": "service",
+        "service": "backend"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "type": "service",
+        "service": "frontend"
+      }
+    }
+  ]
 }
